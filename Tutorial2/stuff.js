@@ -1,14 +1,17 @@
 
-const todos = 
+let todos = 
 [{
   title:'Get Groceries',
-  date:'07-25-2022'
+  date:'2022-07-22',
+  id:"1"
 }, {
   title:'Wash Car',
-  date:'08-25-2022'
+  date:'2022-08-25',
+  id:"2"
 }, {
   title: 'Make Dinner',
-  date:'09-24-2022'
+  date:'2022-09-24',
+  id:"3"
 }];
 
 
@@ -20,26 +23,59 @@ function clickAction() {
 
     const datePicker = document.getElementById('date');
     const theDate = datePicker.value;
+    
+    const theId = new Date().getTime();
+
     todos.push({
       title: theTitle,
-      date:theDate
+      date: theDate,
+      id: theId,
     });
     console.log(todos);
 
     render();
 }
 
+function deleteFunction(event) {
+  console.log(event);
+  const buttonClicked = event.target;
+  const idToDelete = buttonClicked.id;
+  todos = todos.filter(function (todos) {
+    if (todos.id + '' === idToDelete) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  })
+  render();
+}
+
 function render() {
     document.getElementById("todo-list").innerHTML="";
 
     todos.forEach(function(object) {
+
         let element = document.createElement('div');
         element.innerText = object.title + ' ' + object.date;
         const todoList = document.getElementById('todo-list');
         todoList.appendChild(element);
+        const deleteButton = document.createElement('button');
+        deleteButton.innerText = 'Delete';
+        deleteButton.style = 'margin-left:12px;'
+        deleteButton.onclick= deleteFunction;
+        deleteButton.id = object.id;
+        element.appendChild(deleteButton);
     });
 }
 
+function reset() {
+  document.getElementById('todo-list').innerHTML="";
+  for (let i = todos.length; i >= 0; i--) {
+    todos.pop();
+  }
+  render();
+}
 
 /////////////////////SECTION 8 EXERCISE/////////////////
 //
@@ -126,3 +162,31 @@ function render() {
 //   arraySum([5, -2, 7, 0]);
 //
 //////////////////////////////////////////////////////////
+//
+//                      SECTION 10
+//
+// let cartArray = [
+//   { name: 'Apple', price: 4, quantity: 2 },
+//   { name: 'Orange', price: 3, quantity: 3 }
+// ];
+
+//   const receipt = document.getElementById('receipt');
+
+//     receipt.innerHTML = '';
+
+//     cartArray.forEach(function (item) {
+//       const receiptLine = document.createElement('div');
+//       receiptLine.innerText = item.name + ' $' + item.price + ' * ' + item.quantity;
+//       receipt.appendChild(receiptLine);
+//     });
+
+//     // You can also calculate the total using just the loop above, but I like
+//     // to separate them out so each loop does one thing.
+//     let cartTotal = 0;
+//     cartArray.forEach(function (item) {
+//       cartTotal = cartTotal + item.price * item.quantity;
+//     });
+
+//     const totalLine = document.createElement('div');
+//     totalLine.innerText = 'Cart total = $' + cartTotal;
+//     receipt.appendChild(totalLine);
